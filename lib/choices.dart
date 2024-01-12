@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/Drivers/register.dart';
 import 'package:fyp/Students/signup.dart';
+import 'package:fyp/admin/admin_login.dart';
 
 // ignore: camel_case_types
 class choice extends StatefulWidget {
@@ -18,83 +19,87 @@ class _choiceState extends State<choice> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-          children:  [ 
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             SizedBox(
                 width: 318,
                 height: 79,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                   shape:RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(50.0),
-     // side: BorderSide(color: Colors.red)
-    ),
-  
-                backgroundColor: const Color.fromRGBO(188, 10, 15, 1),),
-                  child: const Text('STUDENTS',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      // side: BorderSide(color: Colors.red)
+                    ),
+                    backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
+                  ),
+                  child: const Text(
+                    'STUDENTS',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.white),
+                  ),
                   onPressed: () {
-                  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const Students()
-    ),
-  );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Students()),
+                    );
                   },
-                )
-            ),
-            ]),
-            const SizedBox(height: 20)
-,            Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-          children:  [ 
+                )),
+          ]),
+          const SizedBox(height: 20),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             SizedBox(
                 width: 318,
                 height: 79,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                   shape:RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(50.0),
-     // side: BorderSide(color: Colors.red)
-    ),
-  
-                backgroundColor: const Color.fromRGBO(188, 10, 15, 1),),
-                  child: const Text('DRIVERS',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      // side: BorderSide(color: Colors.red)
+                    ),
+                    backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
+                  ),
+                  child: const Text(
+                    'DRIVERS',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.white),
+                  ),
                   onPressed: () {
-                  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const register()
-    ),
-  );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const register()),
+                    );
                   },
-                )
-            ),
-            ]),
-            const SizedBox(height: 20),
-            Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-          children:  [ 
+                )),
+          ]),
+          const SizedBox(height: 20),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             SizedBox(
                 width: 318,
                 height: 79,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                   shape:RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(50.0),
-     // side: BorderSide(color: Colors.red)
-    ),
-  
-                backgroundColor: const Color.fromRGBO(188, 10, 15, 1),),
-                  child: const Text('ADMIN',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      // side: BorderSide(color: Colors.red)
+                    ),
+                    backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
+                  ),
+                  child: const Text(
+                    'ADMIN',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Colors.white),
+                  ),
                   onPressed: () {
-                  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const choice()
-    ),
-  );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const adminlogin()),
+                    );
                   },
-                )
-            ),
-            ])
+                )),
+          ])
         ],
       ),
     );

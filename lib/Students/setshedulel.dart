@@ -21,7 +21,7 @@ class _sheduleState extends State<shedule> {
       backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
-        title: const Text('Set Shedule'),
+        title: const Text('Set Shedule', style: TextStyle(color: Colors.white)),
       ),
       drawer: Drawer(
         backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
@@ -34,7 +34,7 @@ class _sheduleState extends State<shedule> {
                   color: Color.fromRGBO(255, 255, 255, 1),
                 ),
                 child: Image(
-                  image: AssetImage('assets/logo.png'),
+                  image: AssetImage('assets/images/logo.png'),
                 )),
             ListTile(
                 leading: const Icon(
@@ -90,23 +90,24 @@ class _sheduleState extends State<shedule> {
               },
             ),
             ListTile(
-                leading: const Icon(
-                  Icons.key,
-                  color: Colors.yellow,
-                  size: 25,
-                ),
-                title: const Text('CHANGE PASSWORD',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const forgetpassword()),
-                  );
-                },
+              leading: const Icon(
+                Icons.key,
+                color: Colors.yellow,
+                size: 25,
               ),
+              title: const Text('CHANGE PASSWORD',
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black)),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const forgetpassword()),
+                );
+              },
+            ),
             ListTile(
               leading: const Icon(
                 Icons.logout,
@@ -252,10 +253,8 @@ class _sheduleState extends State<shedule> {
                                     SizedBox(
                                       width: 12,
                                     ),
-                                    Icon(
-                                      Icons.phone,
-                                      color: Color.fromRGBO(255, 219, 21, 1)
-                                    ),
+                                    Icon(Icons.phone,
+                                        color: Color.fromRGBO(255, 219, 21, 1)),
                                     SizedBox(
                                       width: 10,
                                     ),

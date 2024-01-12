@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/Drivers/login.dart';
 
-import 'forgetpassword.dart';
-import 'home.dart';
-import 'login.dart';
-import 'setshedulel.dart';
-
-class Routeview extends StatefulWidget {
-  const Routeview({super.key});
+class Driverrouteview extends StatefulWidget {
+  const Driverrouteview({super.key});
 
   @override
-  State<Routeview> createState() => _RouteviewState();
+  State<Driverrouteview> createState() => _DriverrouteviewState();
 }
 
-class _RouteviewState extends State<Routeview> {
+class _DriverrouteviewState extends State<Driverrouteview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
-        title: const Text('Route View', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Route View',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       drawer: Drawer(
         backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
@@ -34,22 +33,20 @@ class _RouteviewState extends State<Routeview> {
                   image: AssetImage('assets/images/logo.png'),
                 )),
             ListTile(
-                leading: const Icon(
-                  Icons.home,
-                  color: Colors.yellow,
-                  size: 25,
-                ),
-                title: const Text('HOME',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black)),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HOME()),
-                  );
-                }),
+              leading: const Icon(
+                Icons.home,
+                color: Colors.yellow,
+                size: 25,
+              ),
+              title: const Text('HOME',
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black)),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
             ListTile(
               leading: const Icon(
                 Icons.map,
@@ -64,25 +61,8 @@ class _RouteviewState extends State<Routeview> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Routeview()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.calendar_month,
-                color: Colors.yellow,
-                size: 25,
-              ),
-              title: const Text('SHEDULE',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black)),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const shedule()),
+                  MaterialPageRoute(
+                      builder: (context) => const Driverrouteview()),
                 );
               },
             ),
@@ -98,11 +78,7 @@ class _RouteviewState extends State<Routeview> {
                       fontWeight: FontWeight.w600,
                       color: Colors.black)),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const forgetpassword()),
-                );
+                Navigator.pop(context);
               },
             ),
             ListTile(
@@ -119,7 +95,7 @@ class _RouteviewState extends State<Routeview> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const login()),
+                  MaterialPageRoute(builder: (context) => const driverlogin()),
                 );
               },
             ),

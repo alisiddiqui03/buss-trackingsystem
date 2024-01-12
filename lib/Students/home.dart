@@ -42,7 +42,7 @@ class _HOMEState extends State<HOME> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
-          title: const Text('Home'),
+          title: const Text('Home', style: TextStyle(color: Colors.white)),
         ),
         drawer: Drawer(
           backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
@@ -55,7 +55,7 @@ class _HOMEState extends State<HOME> {
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                   child: Image(
-                    image: AssetImage('assets/logo.png'),
+                    image: AssetImage('assets/images/logo.png'),
                   )),
               ListTile(
                 leading: const Icon(
@@ -75,7 +75,7 @@ class _HOMEState extends State<HOME> {
                   );
                 },
               ),
-               ListTile(
+              ListTile(
                 leading: const Icon(
                   Icons.map,
                   color: Colors.yellow,
@@ -86,7 +86,7 @@ class _HOMEState extends State<HOME> {
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: Colors.black)),
-                 onTap: () {
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const Routeview()),
@@ -125,7 +125,8 @@ class _HOMEState extends State<HOME> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const forgetpassword()),
+                    MaterialPageRoute(
+                        builder: (context) => const forgetpassword()),
                   );
                 },
               ),
@@ -140,12 +141,12 @@ class _HOMEState extends State<HOME> {
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: Colors.black)),
-              onTap: () {
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const login()),
                   );
-                },  
+                },
               ),
             ],
           ),
@@ -163,7 +164,7 @@ class _HOMEState extends State<HOME> {
                           fontWeight: FontWeight.w600, fontSize: 18),
                     ),
                     const Image(
-                        image: AssetImage('assets/emoji.png'),
+                        image: AssetImage('assets/images/emoji.png'),
                         height: 30,
                         width: 31),
                   ])),

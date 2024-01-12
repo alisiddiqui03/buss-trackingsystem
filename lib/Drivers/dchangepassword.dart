@@ -1,18 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fyp/Students/login.dart';
+import 'package:fyp/Drivers/login.dart';
 
-// ignore: camel_case_types
-class forgetpassword extends StatefulWidget {
-  const forgetpassword({super.key});
+class Driverchangepassword extends StatefulWidget {
+  const Driverchangepassword({super.key});
 
   @override
-  State<forgetpassword> createState() => _forgetpasswordState();
+  State<Driverchangepassword> createState() => _DriverchangepasswordState();
 }
 
-// ignore: camel_case_types
-class _forgetpasswordState extends State<forgetpassword> {
+class _DriverchangepasswordState extends State<Driverchangepassword> {
   TextEditingController emailController = TextEditingController();
   final auth = FirebaseAuth.instance;
 
@@ -143,7 +141,8 @@ class _forgetpasswordState extends State<forgetpassword> {
                 ),
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const login()),
+                    MaterialPageRoute(
+                        builder: (context) => const driverlogin()),
                   );
                 },
                 child: const Text(

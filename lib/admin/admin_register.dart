@@ -2,20 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fyp/Drivers/driverhome.dart';
-import 'package:fyp/Drivers/drivermenu.dart';
-import 'package:fyp/Drivers/login.dart';
+import 'package:fyp/admin/admin_login.dart';
+import 'package:fyp/admin/admin_menu.dart';
 
-// ignore: camel_case_types
-class register extends StatefulWidget {
-  const register({super.key});
+class adminregister extends StatefulWidget {
+  const adminregister({super.key});
 
   @override
-  State<register> createState() => _registerState();
+  State<adminregister> createState() => _adminregisterState();
 }
 
-// ignore: camel_case_types
-class _registerState extends State<register> {
+class _adminregisterState extends State<adminregister> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -172,8 +169,7 @@ class _registerState extends State<register> {
                 ),
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const driverlogin()),
+                    MaterialPageRoute(builder: (context) => const adminlogin()),
                   );
                 },
               )
@@ -195,7 +191,7 @@ class _registerState extends State<register> {
           password: passwordController.text.toString(),
         );
 
-        await firestore.collection('driver').doc(auth.currentUser!.uid).set({
+        await firestore.collection('admin').doc(auth.currentUser!.uid).set({
           'email': emailController.text.toString(),
           'password': passwordController.text.toString(),
         });
@@ -208,7 +204,7 @@ class _registerState extends State<register> {
         // Navigate only when signup is successful
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const drivermenu(),
+            builder: (context) => const adminmenu(),
           ),
         );
       } catch (e) {

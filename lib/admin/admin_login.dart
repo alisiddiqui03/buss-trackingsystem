@@ -1,19 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:fyp/Drivers/drivermenu.dart';
-import 'package:fyp/Drivers/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fyp/admin/admin_menu.dart';
+import 'package:fyp/admin/admin_register.dart';
 
-// ignore: camel_case_types
-class driverlogin extends StatefulWidget {
-  const driverlogin({super.key});
+class adminlogin extends StatefulWidget {
+  const adminlogin({super.key});
 
   @override
-  State<driverlogin> createState() => _driverloginState();
+  State<adminlogin> createState() => _adminloginState();
 }
 
-// ignore: camel_case_types
-class _driverloginState extends State<driverlogin> {
+class _adminloginState extends State<adminlogin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -122,7 +120,8 @@ class _driverloginState extends State<driverlogin> {
                 ),
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const register()),
+                    MaterialPageRoute(
+                        builder: (context) => const adminregister()),
                   );
                 },
               )
@@ -148,10 +147,10 @@ class _driverloginState extends State<driverlogin> {
           toastLength: Toast.LENGTH_SHORT,
         );
 
-        // Navigate to another page when login is successful
+        //  Navigate to another page when login is successful
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const drivermenu(),
+            builder: (context) => const adminmenu(),
           ),
         );
       } catch (e) {

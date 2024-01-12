@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/Drivers/dchangepassword.dart';
-import 'package:fyp/Drivers/driverhome.dart';
-import 'package:fyp/Drivers/drouteview.dart';
-import 'package:fyp/Drivers/login.dart';
+import 'package:fyp/admin/admin_home.dart';
+import 'package:fyp/admin/admin_login.dart';
 
-// ignore: camel_case_types
-class drivermenu extends StatefulWidget {
-  const drivermenu({super.key});
+class adminmenu extends StatefulWidget {
+  const adminmenu({super.key});
 
   @override
-  State<drivermenu> createState() => _drivermenuState();
+  State<adminmenu> createState() => _adminmenuState();
 }
 
-// ignore: camel_case_types
-class _drivermenuState extends State<drivermenu> {
+class _adminmenuState extends State<adminmenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +45,11 @@ class _drivermenuState extends State<drivermenu> {
               Expanded(
                 child: TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const driverhome()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const driverhome()),
+                      // );
                     },
                     child: const Align(
                         alignment: Alignment.centerLeft,
@@ -80,41 +76,13 @@ class _drivermenuState extends State<drivermenu> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Driverrouteview()),
+                            builder: (context) => const adminhome()),
                       );
                     },
                     child: const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Route View',
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black),
-                        ))),
-              )
-            ],
-          ),
-          const SizedBox(height: 15),
-          Row(
-            children: [
-              const SizedBox(width: 12),
-              const Image(
-                  image: AssetImage('assets/images/m4.png'), height: 30),
-              const SizedBox(width: 20),
-              Expanded(
-                child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Driverchangepassword()),
-                      );
-                    },
-                    child: const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Change Password',
+                          'Manage Routes',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -136,7 +104,7 @@ class _drivermenuState extends State<drivermenu> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const driverlogin()),
+                            builder: (context) => const adminlogin()),
                       );
                     },
                     child: const Align(

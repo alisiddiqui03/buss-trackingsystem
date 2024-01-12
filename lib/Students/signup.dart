@@ -1,14 +1,10 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fyp/Students/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 import 'menu.dart';
-
 
 class Students extends StatefulWidget {
   const Students({super.key});
@@ -22,12 +18,11 @@ class _StudentsState extends State<Students> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmpasswordController = TextEditingController();
-    final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
-   late String password;
+  late String password;
   late String confirmPassword;
 
   @override
@@ -35,11 +30,9 @@ class _StudentsState extends State<Students> {
     return Scaffold(
         body: Center(
             child: SingleChildScrollView(
-      child: 
-      Form(
-          key: formKey,
-          child:
-      Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                child: Form(
+      key: formKey,
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -96,17 +89,16 @@ class _StudentsState extends State<Students> {
           decoration: const BoxDecoration(),
           child: TextFormField(
             controller: passwordController,
-             obscureText: true,
-             validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                  
-                },
-                onSaved: (value) {
-                  password = value!;
-                },
+            obscureText: true,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter a password';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              password = value!;
+            },
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
@@ -121,18 +113,18 @@ class _StudentsState extends State<Students> {
           child: TextFormField(
             obscureText: true,
             controller: confirmpasswordController,
-             validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please confirm your password';
-                  }
-                  if (value != passwordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  confirmPassword = value!;
-                },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please confirm your password';
+              }
+              if (value != passwordController.text) {
+                return 'Passwords do not match';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              confirmPassword = value!;
+            },
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(50),
@@ -149,79 +141,78 @@ class _StudentsState extends State<Students> {
             width: 318,
             height: 59,
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0),
-                  // side: BorderSide(color: Colors.red)
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50.0),
+                    // side: BorderSide(color: Colors.red)
+                  ),
+                  backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
                 ),
-                backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
-              ),
-              child: const Text(
-                'Register',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-              ),
-              onPressed: () async {
-                FirebaseAuth auth = FirebaseAuth.instance;
-                FirebaseFirestore firestore = FirebaseFirestore.instance;
-                 if (nameController.text.isEmpty ||
-        emailController.text.isEmpty ||
-        passwordController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "Please fill in all the required fields.",
-        toastLength: Toast.LENGTH_SHORT,
-      );
-      return; // Return without proceeding further
-    }
-    if (formKey.currentState!.validate()) 
-      formKey.currentState!.save();
-      
+                child: const Text(
+                  'Register',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      color: Colors.white),
+                ),
+                onPressed: () async {
+                  FirebaseAuth auth = FirebaseAuth.instance;
+                  FirebaseFirestore firestore = FirebaseFirestore.instance;
+                  if (nameController.text.isEmpty ||
+                      emailController.text.isEmpty ||
+                      passwordController.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: "Please fill in all the required fields.",
+                      toastLength: Toast.LENGTH_SHORT,
+                    );
+                    return; // Return without proceeding further
+                  }
+                  if (formKey.currentState!.validate())
+                    formKey.currentState!.save();
 
-                try {
-                  // ignore: unused_local_variable
-                  UserCredential userCredential =
-                      await auth.createUserWithEmailAndPassword(
-                          email: emailController.text.toString(),
-                          password: passwordController.text.toString());
-                  firestore
-                      .collection('users')
-                      .doc(auth.currentUser!.uid)
-                      .set({
-                    'email': emailController.text.toString(),
-                    'name': nameController.text.toString(),
-                    'password': passwordController.text.toString()
-                  });
-                
-                // ignore: avoid_print
-                print('Signup successful: ${userCredential.user?.email}');
-             } catch (e) {
-      // ignore: avoid_print
-      print('Signup failed: $e');
-      Fluttertoast.showToast(
-        msg: "Signup successful. Account Has Been Created.",
-        toastLength: Toast.LENGTH_SHORT,
-      );
-                
-                             // ignore: use_build_context_synchronously
-                             Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const menu()
-    ),
-  );
+                  try {
+                    // ignore: unused_local_variable
+                    UserCredential userCredential =
+                        await auth.createUserWithEmailAndPassword(
+                            email: emailController.text.toString(),
+                            password: passwordController.text.toString());
+                    firestore
+                        .collection('users')
+                        .doc(auth.currentUser!.uid)
+                        .set({
+                      'email': emailController.text.toString(),
+                      'name': nameController.text.toString(),
+                      'password': passwordController.text.toString()
+                    });
 
-                // await FirebaseAuth.instance
-                //     .createUserWithEmailAndPassword(
-                //         email: emailController.text,
-                //         password: passwordController.text)
-                //     .then((value) {
-                //   Navigator.of(context)
-                //       .push(
-                //           MaterialPageRoute(builder: (context) => const menu()))
-                //       .onError((error, stackTrace) =>
-                //           {print("Error ${error.toString()}")});
-                // });
-            
-  }})
-            ),
+                    // ignore: avoid_print
+                    print('Signup successful: ${userCredential.user?.email}');
+                  } catch (e) {
+                    // ignore: avoid_print
+                    print('Signup failed: $e');
+                    Fluttertoast.showToast(
+                      msg: "Signup successful. Account Has Been Created.",
+                      toastLength: Toast.LENGTH_SHORT,
+                    );
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const menu()),
+                    );
+
+                    // await FirebaseAuth.instance
+                    //     .createUserWithEmailAndPassword(
+                    //         email: emailController.text,
+                    //         password: passwordController.text)
+                    //     .then((value) {
+                    //   Navigator.of(context)
+                    //       .push(
+                    //           MaterialPageRoute(builder: (context) => const menu()))
+                    //       .onError((error, stackTrace) =>
+                    //           {print("Error ${error.toString()}")});
+                    // });
+                  }
+                })),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -243,10 +234,6 @@ class _StudentsState extends State<Students> {
           ],
         ),
       ]),
-      )
-    )
-    )
-    );
+    ))));
   }
 }
-

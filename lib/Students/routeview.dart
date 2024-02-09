@@ -1,18 +1,134 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/Students/forgetpassword.dart';
+import 'package:fyp/Students/home.dart';
+import 'package:fyp/Students/login.dart';
+import 'package:fyp/Students/setshedulel.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'forgetpassword.dart';
-import 'home.dart';
-import 'login.dart';
-import 'setshedulel.dart';
-
-class Routeview extends StatefulWidget {
-  const Routeview({super.key});
+class MapIntegerate extends StatefulWidget {
+  const MapIntegerate({super.key});
 
   @override
-  State<Routeview> createState() => _RouteviewState();
+  State<MapIntegerate> createState() => _MapIntegerateState();
 }
 
-class _RouteviewState extends State<Routeview> {
+class _MapIntegerateState extends State<MapIntegerate> {
+  Completer<GoogleMapController> _controller = Completer();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  static final CameraPosition _kGooglePlex =
+      const CameraPosition(target: LatLng(24.8607, 67.0011), zoom: 15);
+
+  List<Marker> _markers = [];
+  List<Marker> _List = const [
+    Marker(
+      markerId: MarkerId('north_karachi'),
+      position: LatLng(24.9729, 67.0643),
+      infoWindow: InfoWindow(title: 'North Karachi'),
+    ),
+    Marker(
+      markerId: MarkerId('north_nazimabad'),
+      position: LatLng(24.9372, 67.0423),
+      infoWindow: InfoWindow(title: 'North Nazimabad'),
+    ),
+    Marker(
+      markerId: MarkerId('gulshan'),
+      position: LatLng(24.9189, 67.0971),
+      infoWindow: InfoWindow(title: 'Gulshan'),
+    ),
+    Marker(
+      markerId: MarkerId('johar'),
+      position: LatLng(24.9204, 67.1344),
+      infoWindow: InfoWindow(title: 'Johar'),
+    ),
+    Marker(
+      markerId: MarkerId('bahadurabad'),
+      position: LatLng(24.8825, 67.0694),
+      infoWindow: InfoWindow(title: 'Bahadurabad'),
+    ),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _markers.addAll(_List);
+    _getCurrentLocation();
+    _getLocationPeriodically();
+    _fetchUsersLocations();
+  }
+
+  void _getLocationPeriodically() {
+    Timer.periodic(Duration(minutes: 10), (Timer timer) {
+      _getCurrentLocation();
+    });
+  }
+
+  void _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      // To save current location
+      saveLocationToFirestore(position);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> saveLocationToFirestore(Position position) async {
+    // Get current user
+    User? user = _auth.currentUser;
+    print(user!.uid);
+
+    // Check if user is authenticated
+    if (user != null) {
+      String uid = user.uid;
+
+      // Reference to the user's document in Firestore
+      DocumentReference userRef = _firestore.collection('users').doc(uid);
+
+      // Save location data
+      await userRef.set({
+        'currentLocation': GeoPoint(position.latitude, position.longitude),
+        'lastUpdated': DateTime.now(), // optional timestamp
+      }, SetOptions(merge: true)); // merge true to not overwrite other fields
+    }
+  }
+
+  void _fetchUsersLocations() async {
+    // Fetch users' locations from Firestore
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('driver').get();
+
+    // Iterate through each document and add markers on the map
+    querySnapshot.docs.forEach((doc) {
+      GeoPoint location = doc['currentLocation'];
+      String email = doc['email'];
+      _addMarker(location.latitude, location.longitude, email);
+    });
+    print(_markers.toString() + "hello");
+  }
+
+  Future<void> _addMarker(double lat, double lng, String userName) async {
+    // Custom marker image
+    BitmapDescriptor customIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(size: Size(12, 12)), 'assets/images/bus1.png');
+
+    setState(() {
+      _markers.add(Marker(
+          markerId: MarkerId(userName),
+          position: LatLng(lat, lng),
+          infoWindow: InfoWindow(title: userName),
+          icon: customIcon));
+    });
+    print("lol$lat $lng $userName");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +180,8 @@ class _RouteviewState extends State<Routeview> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Routeview()),
+                  MaterialPageRoute(
+                      builder: (context) => const MapIntegerate()),
                 );
               },
             ),
@@ -126,13 +243,17 @@ class _RouteviewState extends State<Routeview> {
           ],
         ),
       ),
-      body: Stack(fit: StackFit.expand, children: [
-        // or Expanded
-        Image.asset(
-          'assets/images/map.png', // Replace with your image path
-          fit: BoxFit.cover,
-        ),
-      ]),
+      body: GoogleMap(
+        initialCameraPosition: _kGooglePlex,
+        markers: Set<Marker>.of(_markers),
+        mapType: MapType.normal,
+        myLocationEnabled: true,
+        compassEnabled: true,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+        myLocationButtonEnabled: true,
+      ),
     );
   }
 }

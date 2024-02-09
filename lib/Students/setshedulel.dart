@@ -67,7 +67,8 @@ class _sheduleState extends State<shedule> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Routeview()),
+                  MaterialPageRoute(
+                      builder: (context) => const MapIntegerate()),
                 );
               },
             ),

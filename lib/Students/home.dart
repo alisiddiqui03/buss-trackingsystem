@@ -89,7 +89,8 @@ class _HOMEState extends State<HOME> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Routeview()),
+                    MaterialPageRoute(
+                        builder: (context) => const MapIntegerate()),
                   );
                 },
               ),

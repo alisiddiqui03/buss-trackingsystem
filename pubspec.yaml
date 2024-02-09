@@ -41,6 +41,8 @@ dependencies:
   fluttertoast: ^8.2.2
   google_maps_flutter: ^2.0.6
   geolocator: ^8.0.1
+  flutter_polyline_points: ^2.0.0
+  image: ^4.1.6
 
 dev_dependencies:
   flutter_test:

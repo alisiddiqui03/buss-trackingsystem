@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:image/image.dart' as IMG;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -112,18 +115,35 @@ class _DriverrouteviewState extends State<Driverrouteview> {
   }
 
   Future<void> _addMarker(double lat, double lng, String userName) async {
-    // Custom marker image
-    BitmapDescriptor customIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(0, 0)), 'assets/images/person.png');
+    // Load the custom marker image from assets
+    ByteData imageData = await rootBundle.load('assets/images/person.png');
+    Uint8List bytes = imageData.buffer.asUint8List();
 
+    // Resize the marker image
+    Uint8List resizedBytes =
+        resizeImage(bytes, 60, 60); // Adjust the width and height as needed
+
+    // Convert the resized image to a BitmapDescriptor
+    BitmapDescriptor customIcon = BitmapDescriptor.fromBytes(resizedBytes);
+
+    // Add the marker to the markers list
     setState(() {
       _markers.add(Marker(
-          markerId: MarkerId(userName),
-          position: LatLng(lat, lng),
-          infoWindow: InfoWindow(title: userName),
-          icon: customIcon));
+        markerId: MarkerId(userName),
+        position: LatLng(lat, lng),
+        infoWindow: InfoWindow(title: userName),
+        icon: customIcon,
+      ));
     });
-    print("lol$lat $lng $userName");
+
+    print("Marker added: $lat, $lng, $userName");
+  }
+
+// Function to resize an image
+  Uint8List resizeImage(Uint8List data, int width, int height) {
+    IMG.Image? img = IMG.decodeImage(data);
+    IMG.Image resized = IMG.copyResize(img!, width: width, height: height);
+    return Uint8List.fromList(IMG.encodePng(resized));
   }
 
   @override

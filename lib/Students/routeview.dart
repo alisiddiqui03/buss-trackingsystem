@@ -1,8 +1,10 @@
 import 'dart:async';
-
+import 'dart:typed_data';
+import 'package:image/image.dart' as IMG;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fyp/Students/forgetpassword.dart';
 import 'package:fyp/Students/home.dart';
 import 'package:fyp/Students/login.dart';
@@ -52,6 +54,20 @@ class _MapIntegerateState extends State<MapIntegerate> {
       position: LatLng(24.8825, 67.0694),
       infoWindow: InfoWindow(title: 'Bahadurabad'),
     ),
+    Marker(
+      markerId: MarkerId('Dha suffa university'),
+      position: LatLng(24.8147, 67.0796),
+      infoWindow: InfoWindow(title: 'DHA SUFFA UNIVERSITY'),
+    ),
+  ];
+
+  List<LatLng> _polylineCoordinates = [
+    LatLng(24.9729, 67.0643), // North Karachi
+    LatLng(24.9372, 67.0423), // North Nazimabad
+    LatLng(24.9189, 67.0971), // Gulshan
+    LatLng(24.9204, 67.1344), // Johar
+    LatLng(24.8825, 67.0694), // Bahadurabad
+    LatLng(24.8147, 67.0796), // DHA Suffa University
   ];
 
   @override
@@ -115,18 +131,35 @@ class _MapIntegerateState extends State<MapIntegerate> {
   }
 
   Future<void> _addMarker(double lat, double lng, String userName) async {
-    // Custom marker image
-    BitmapDescriptor customIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(size: Size(12, 12)), 'assets/images/bus1.png');
+    // Load the custom marker image from assets
+    ByteData imageData = await rootBundle.load('assets/images/bus1.png');
+    Uint8List bytes = imageData.buffer.asUint8List();
 
+    // Resize the marker image
+    Uint8List resizedBytes =
+        resizeImage(bytes, 60, 60); // Adjust the width and height as needed
+
+    // Convert the resized image to a BitmapDescriptor
+    BitmapDescriptor customIcon = BitmapDescriptor.fromBytes(resizedBytes);
+
+    // Add the marker to the markers list
     setState(() {
       _markers.add(Marker(
-          markerId: MarkerId(userName),
-          position: LatLng(lat, lng),
-          infoWindow: InfoWindow(title: userName),
-          icon: customIcon));
+        markerId: MarkerId(userName),
+        position: LatLng(lat, lng),
+        infoWindow: InfoWindow(title: userName),
+        icon: customIcon,
+      ));
     });
-    print("lol$lat $lng $userName");
+
+    print("Marker added: $lat, $lng, $userName");
+  }
+
+// Function to resize an image
+  Uint8List resizeImage(Uint8List data, int width, int height) {
+    IMG.Image? img = IMG.decodeImage(data);
+    IMG.Image resized = IMG.copyResize(img!, width: width, height: height);
+    return Uint8List.fromList(IMG.encodePng(resized));
   }
 
   @override
@@ -246,6 +279,14 @@ class _MapIntegerateState extends State<MapIntegerate> {
       body: GoogleMap(
         initialCameraPosition: _kGooglePlex,
         markers: Set<Marker>.of(_markers),
+        polylines: <Polyline>{
+          Polyline(
+            polylineId: PolylineId('route'),
+            color: Colors.red,
+            points: _polylineCoordinates,
+            width: 5,
+          ),
+        },
         mapType: MapType.normal,
         myLocationEnabled: true,
         compassEnabled: true,

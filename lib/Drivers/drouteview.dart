@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math' as Math;
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as IMG;
@@ -52,6 +52,24 @@ class _DriverrouteviewState extends State<Driverrouteview> {
       position: LatLng(24.8825, 67.0694),
       infoWindow: InfoWindow(title: 'Bahadurabad'),
     ),
+    Marker(
+      markerId: MarkerId('Dha suffa university'),
+      position: LatLng(24.8147, 67.0796),
+      infoWindow: InfoWindow(title: 'DHA SUFFA UNIVERSITY'),
+    ),
+    Marker(
+      markerId: MarkerId('Saifee Medical Store'),
+      position: LatLng(24.8162806, 67.0767438),
+      infoWindow: InfoWindow(title: 'SAIFEE MEDICAL STORE'),
+    ),
+  ];
+  List<LatLng> _polylineCoordinates = [
+    LatLng(24.9729, 67.0643), // North Karachi
+    LatLng(24.9372, 67.0423), // North Nazimabad
+    LatLng(24.9189, 67.0971), // Gulshan
+    LatLng(24.9204, 67.1344), // Johar
+    LatLng(24.8825, 67.0694), // Bahadurabad
+    LatLng(24.8147, 67.0796), // DHA Suffa University
   ];
 
   @override
@@ -144,6 +162,44 @@ class _DriverrouteviewState extends State<Driverrouteview> {
     IMG.Image? img = IMG.decodeImage(data);
     IMG.Image resized = IMG.copyResize(img!, width: width, height: height);
     return Uint8List.fromList(IMG.encodePng(resized));
+  }
+
+  // Function to calculate estimated time to reach a marker
+  void calculateTimeToReachMarker(
+      Position busPosition, LatLng markerPosition, double busSpeed) {
+    double distance = calculateDistance(
+        busPosition.latitude,
+        busPosition.longitude,
+        markerPosition.latitude,
+        markerPosition.longitude);
+    double time = distance / busSpeed;
+    print('Estimated time to reach marker: $time hours');
+  }
+
+  // Function to calculate distance between two points using Haversine formula
+  double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double pi = 3.1415926535897932;
+    const double earthRadius = 6371.0; // Radius of the earth in km
+
+    double dLat = (lat2 - lat1) * pi / 180.0;
+    double dLon = (lon2 - lon1) * pi / 180.0;
+
+    double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * pi / 180.0) *
+            Math.cos(lat2 * pi / 180.0) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    double distance = earthRadius * c;
+
+    return distance; // Distance in km
+  }
+
+  // Call this function where you have access to the bus's current position and speed
+  void calculateTimeForAllMarkers(Position busPosition, double busSpeed) {
+    for (Marker marker in _List) {
+      calculateTimeToReachMarker(busPosition, marker.position, busSpeed);
+    }
   }
 
   @override
@@ -242,6 +298,14 @@ class _DriverrouteviewState extends State<Driverrouteview> {
       body: GoogleMap(
         initialCameraPosition: _kGooglePlex,
         markers: Set<Marker>.of(_markers),
+        polylines: <Polyline>{
+          Polyline(
+            polylineId: PolylineId('route'),
+            color: Colors.red,
+            points: _polylineCoordinates,
+            width: 5,
+          ),
+        },
         mapType: MapType.normal,
         myLocationEnabled: true,
         compassEnabled: true,

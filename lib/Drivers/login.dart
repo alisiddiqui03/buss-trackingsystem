@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fyp/Drivers/drivermenu.dart';
 import 'package:fyp/Drivers/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,118 +20,150 @@ class _driverloginState extends State<driverlogin> {
   TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child: SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Text(
-            'Welcome Back!',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image(
-                  image: const AssetImage('assets/images/bus.png'),
-                  height: 300,
-                  width: MediaQuery.of(context).size.width)
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+    return WillPopScope(
+        onWillPop: () async {
+          // Show a dialog to confirm exit
+          bool confirmExit = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Confirm Exit'),
+                content: Text('Are you sure you want to exit app?'),
+                actions: <Widget>[
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text('No'),
                   ),
-                  labelText: 'Enter email',
-                  filled: true, //<-- SEE HERE
-                  fillColor: const Color.fromRGBO(238, 238, 238, 1)),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                return null;
-              },
-            ),
-          ),
-          const SizedBox(height: 15),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            decoration: const BoxDecoration(),
-            child: TextFormField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Close the application when "Yes" is pressed
+                      SystemNavigator.pop(); // This will close the app
+                    },
+                    child: Text('Yes'),
                   ),
-                  labelText: 'Enter password',
-                  filled: true, //<-- SEE HERE
-                  fillColor: const Color.fromRGBO(238, 238, 238, 1)),
-              obscureText: true,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
-                }
-                return null;
-              },
-            ),
-          ),
-          const SizedBox(height: 30),
-          InkWell(
-              onTap: () {
-                _login();
-              },
-              child: Container(
-                  margin: const EdgeInsets.only(top: 7),
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  width: 318,
-                  height: 59,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                        // side: BorderSide(color: Colors.red)
+                ],
+              );
+            },
+          );
+
+          // Return false to allow navigation back to login page if not confirmed
+          // Return true to prevent navigation back to login page if confirmed
+          return confirmExit ?? false;
+        },
+        child: Scaffold(
+            body: Center(
+                child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const Text(
+                'Welcome Back!',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(
+                      image: const AssetImage('assets/images/bus.png'),
+                      height: 300,
+                      width: MediaQuery.of(context).size.width)
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: TextFormField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
                       ),
-                      backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
-                    ),
+                      labelText: 'Enter email',
+                      filled: true, //<-- SEE HERE
+                      fillColor: const Color.fromRGBO(238, 238, 238, 1)),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 15),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                decoration: const BoxDecoration(),
+                child: TextFormField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      labelText: 'Enter password',
+                      filled: true, //<-- SEE HERE
+                      fillColor: const Color.fromRGBO(238, 238, 238, 1)),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 30),
+              InkWell(
+                  onTap: () {
+                    _login();
+                  },
+                  child: Container(
+                      margin: const EdgeInsets.only(top: 7),
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      width: 318,
+                      height: 59,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                            // side: BorderSide(color: Colors.red)
+                          ),
+                          backgroundColor: const Color.fromRGBO(188, 10, 15, 1),
+                        ),
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                              color: Colors.white),
+                        ),
+                        onPressed: () {
+                          _login();
+                        },
+                      ))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Dont have an account ?'),
+                  TextButton(
                     child: const Text(
-                      'Login',
+                      'Sign up',
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
                           fontSize: 18,
-                          color: Colors.white),
+                          color: Color.fromRGBO(188, 10, 15, 1),
+                          fontWeight: FontWeight.w600),
                     ),
                     onPressed: () {
-                      _login();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const register()),
+                      );
                     },
-                  ))),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text('Dont have an account ?'),
-              TextButton(
-                child: const Text(
-                  'Sign up',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Color.fromRGBO(188, 10, 15, 1),
-                      fontWeight: FontWeight.w600),
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const register()),
-                  );
-                },
-              )
-            ],
+                  )
+                ],
+              ),
+            ]),
           ),
-        ]),
-      ),
-    )));
+        ))));
   }
 
   void _login() async {

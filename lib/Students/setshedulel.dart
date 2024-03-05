@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/Students/home.dart';
 import 'package:fyp/Students/routeview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'forgetpassword.dart';
 import 'login.dart';
@@ -164,7 +165,7 @@ class _sheduleState extends State<shedule> {
                     Padding(
                         padding: const EdgeInsets.only(top: 20, right: 30),
                         child: Container(
-                            width: 150,
+                            width: 110,
                             height: 38,
                             decoration: const BoxDecoration(
                               borderRadius:
@@ -176,7 +177,7 @@ class _sheduleState extends State<shedule> {
                               child: Text(
                                 'North Karachi',
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w500),
+                                    fontSize: 12, fontWeight: FontWeight.w500),
                               ),
                             )))
                   ],
@@ -234,7 +235,7 @@ class _sheduleState extends State<shedule> {
                             ),
                             Container(
                                 height: 30,
-                                width: 160,
+                                width: 180,
                                 decoration: BoxDecoration(
                                     boxShadow: const [
                                       BoxShadow(
@@ -249,21 +250,26 @@ class _sheduleState extends State<shedule> {
                                     ],
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(17)),
-                                child: const Row(
+                                child: Row(
                                   children: [
                                     SizedBox(
-                                      width: 12,
+                                      width: 5,
                                     ),
                                     Icon(Icons.phone,
                                         color: Color.fromRGBO(255, 219, 21, 1)),
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Text(
-                                      "Call to driver",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
-                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        _makePhoneCall("+1234556");
+                                      },
+                                      child: Text(
+                                        "Call to driver",
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 16),
+                                      ),
+                                    )
                                   ],
                                 )),
                           ],
@@ -307,4 +313,13 @@ Widget StopRow(String time, String stop) {
       ],
     ),
   );
+}
+
+void _makePhoneCall(String phoneNumber) async {
+  String url = 'tel:$phoneNumber';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
 }

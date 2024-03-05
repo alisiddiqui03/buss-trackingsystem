@@ -43,6 +43,7 @@ dependencies:
   geolocator: ^8.0.1
   flutter_polyline_points: ^2.0.0
   image: ^4.1.6
+  url_launcher: ^6.2.5
 
 dev_dependencies:
   flutter_test:

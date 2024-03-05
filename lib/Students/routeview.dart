@@ -59,6 +59,11 @@ class _MapIntegerateState extends State<MapIntegerate> {
       position: LatLng(24.8147, 67.0796),
       infoWindow: InfoWindow(title: 'DHA SUFFA UNIVERSITY'),
     ),
+    Marker(
+      markerId: MarkerId('Saifee Medical Store'),
+      position: LatLng(24.8162806, 67.0767438),
+      infoWindow: InfoWindow(title: 'SAIFEE MEDICAL STORE'),
+    ),
   ];
 
   List<LatLng> _polylineCoordinates = [

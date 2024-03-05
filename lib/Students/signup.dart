@@ -199,6 +199,10 @@ class _StudentsState extends State<Students> {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => const menu()),
                     );
+                    // After navigation, clear the text input fields
+                    nameController.clear();
+                    emailController.clear();
+                    passwordController.clear();
 
                     // await FirebaseAuth.instance
                     //     .createUserWithEmailAndPassword(
